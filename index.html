@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yako ポートフォリオ</title>
+<meta name="description" content="公開中のWebアプリ3作品を紹介するポートフォリオサイト。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* レイアウトの考え方: 3作品を1本の路線上の「駅」として縦に並べる。駅ナンバリングと駅名標が見出しの役割を持つ。 */
+:root{
+  --paper:#f3f5f4;
+  --surface:#ffffff;
+  --ink:#14212b;
+  --ink-soft:#52626e;
+  --rule:#d5dcdb;
+  --line-a:#0b8f5a;   /* W01 路線 */
+  --line-b:#c2267a;   /* W02 リズム */
+  --line-c:#d9730d;   /* W03 見守り */
+  --font-display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --font-body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10181e;--surface:#18232b;--ink:#eaf0f0;--ink-soft:#9fb0b9;--rule:#2c3a44;
+    --line-a:#35c98b;--line-b:#f062ab;--line-c:#f59a3c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10181e;--surface:#18232b;--ink:#eaf0f0;--ink-soft:#9fb0b9;--rule:#2c3a44;
+  --line-a:#35c98b;--line-b:#f062ab;--line-c:#f59a3c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--line-a);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.3;text-wrap:balance;margin:0}
+p{margin:0}
+
+/* ヘッダー */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:2px solid var(--ink)}
+.brand{font-family:var(--font-mono);font-weight:700;font-size:14px;letter-spacing:.04em;text-decoration:none}
+.nav{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;font-weight:700}
+.nav a{text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px}
+.nav a:hover{border-bottom-color:var(--ink)}
+
+/* ヒーロー */
+.hero{padding:72px 0 56px;display:grid;gap:20px}
+.eyebrow{font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;color:var(--ink-soft)}
+.hero h1{font-size:clamp(34px,6.4vw,68px);font-weight:900;letter-spacing:-.01em}
+.hero p{max-width:34em;color:var(--ink-soft);font-size:17px}
+.stops{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;list-style:none;padding:0}
+.stops a{display:flex;align-items:center;gap:10px;text-decoration:none;background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:6px 16px 6px 6px;font-weight:700;font-size:14px}
+.stops a:hover{border-color:var(--ink)}
+
+/* 駅ナンバリング */
+.num{display:inline-grid;place-items:center;width:44px;height:44px;border:4px solid var(--c);border-radius:10px;background:var(--surface);font-family:var(--font-mono);font-weight:700;font-size:11px;line-height:1.1;text-align:center;flex:none}
+.num b{display:block;font-size:15px}
+.num.sm{width:34px;height:34px;border-width:3px;border-radius:8px;font-size:9px}
+.num.sm b{font-size:12px}
+.a{--c:var(--line-a)}.b{--c:var(--line-b)}.c{--c:var(--line-c)}
+
+/* セクション見出し */
+.sec{padding:56px 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font-size:28px;font-weight:900}
+.sec-head span{font-family:var(--font-mono);font-size:13px;color:var(--ink-soft);letter-spacing:.1em}
+
+/* 路線と駅 */
+.route{position:relative;display:grid;gap:40px;padding-left:44px}
+.route::before{content:"";position:absolute;left:13px;top:8px;bottom:8px;width:6px;border-radius:3px;background:linear-gradient(var(--line-a) 0 33%,var(--line-b) 33% 66%,var(--line-c) 66% 100%)}
+.work{position:relative}
+.work::before{content:"";position:absolute;left:-40px;top:14px;width:18px;height:18px;border-radius:50%;background:var(--surface);border:5px solid var(--c)}
+.card{background:var(--surface);border:1px solid var(--rule);border-top:6px solid var(--c);border-radius:6px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0}
+.body{padding:28px;display:grid;gap:16px;align-content:start}
+.sign{display:flex;align-items:center;gap:14px}
+.sign h3{font-size:26px;font-weight:900}
+.sign small{display:block;font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);letter-spacing:.06em;font-weight:500}
+.lead{font-weight:700;font-size:17px;line-height:1.7}
+.points{margin:0;padding-left:1.2em;display:grid;gap:6px;color:var(--ink-soft);font-size:15px}
+.points strong{color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.tags li{font-family:var(--font-mono);font-size:12px;border:1px solid var(--rule);border-radius:4px;padding:2px 8px;background:var(--paper)}
+.go{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:700;font-size:15px;padding:10px 18px;border-radius:4px}
+.go:hover{background:var(--c);color:#fff}
+.note{font-size:13px;color:var(--ink-soft)}
+.links{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.src{font-weight:700;font-size:14px}
+.login{font-family:var(--font-mono);font-size:13px;background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:1px 8px;white-space:nowrap}
+
+/* 作品ごとの図 */
+.fig{border-left:1px solid var(--rule);background:var(--paper);display:grid;place-items:center;padding:24px;min-height:240px;border-radius:0 6px 6px 0}
+.fig svg{width:100%;max-width:300px;height:auto;display:block}
+.lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:240px;height:200px;position:relative;border-bottom:4px solid var(--line-b)}
+.lanes i{background:var(--surface);border:1px solid var(--rule);position:relative}
+.lanes i::after{content:"";position:absolute;left:6px;right:6px;height:10px;border-radius:3px;background:var(--line-b);top:var(--t)}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:240px;margin-top:8px;font-family:var(--font-mono);font-weight:700;font-size:13px;text-align:center}
+.judge{font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--line-b);letter-spacing:.14em;margin-bottom:8px}
+.game{display:grid;justify-items:center;width:100%}
+.phone{width:100%;max-width:230px;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px;display:grid;gap:8px;font-size:13px;font-weight:700}
+.phone .sos{background:#c62828;color:#fff;border-radius:6px;padding:8px;text-align:center}
+.phone .row{display:flex;justify-content:space-between;gap:8px;border:1px solid var(--rule);border-left:4px solid var(--line-c);border-radius:6px;padding:7px 10px}
+.phone .row span{color:var(--ink-soft);font-weight:500}
+
+/* 技術表 */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--rule);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+thead th{font-size:12px;font-family:var(--font-mono);letter-spacing:.1em;color:var(--ink-soft);font-weight:500}
+td:first-child{font-weight:700;white-space:nowrap}
+td:nth-child(2){color:var(--ink-soft)}
+.used{display:flex;gap:6px}
+
+/* プロフィール */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px}
+.facts{margin:0;display:grid;gap:0;background:var(--surface);border:1px solid var(--rule);border-radius:6px}
+.facts div{display:grid;grid-template-columns:7em 1fr;gap:12px;padding:12px 20px;border-bottom:1px solid var(--rule)}
+.facts div:last-child{border-bottom:0}
+.facts dt{font-size:13px;color:var(--ink-soft);font-weight:700}
+.facts dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+.intro{display:grid;gap:14px;align-content:start;max-width:36em}
+
+footer{border-top:2px solid var(--ink);margin-top:40px;padding:24px 0 48px;font-size:13px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .card{grid-template-columns:1fr}
+  .fig{border-left:0;border-top:1px solid var(--rule);border-radius:0 0 6px 6px;min-height:0}
+  .about{grid-template-columns:1fr}
+  .hero{padding:48px 0 32px}
+  .route{padding-left:32px}
+  .route::before{left:6px}
+  .work::before{left:-35px}
+  .body{padding:20px}
+  .wrap{padding:0 16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <a class="brand" href="#top">yako / PORTFOLIO</a>
+  <nav class="nav" aria-label="ページ内メニュー">
+    <a href="#works">作品</a>
+    <a href="#skills">技術</a>
+    <a href="#about">プロフィール</a>
+  </nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <p class="eyebrow">WEB PORTFOLIO 2026</p>
+  <h1>動くものを、<br>公開するところまで。</h1>
+  <p>首都圏1,708駅から行ける駅を探す地図アプリ、ブラウザで遊べるリズムゲーム、Raspberry Piとつながる見守りシステム。いま実際に触れる3作品を紹介します。</p>
+  <ul class="stops">
+    <li><a href="#w01"><span class="num sm a">W<b>01</b></span>行ける駅を探す</a></li>
+    <li><a href="#w02"><span class="num sm b">W<b>02</b></span>落ち物ゲー</a></li>
+    <li><a href="#w03"><span class="num sm c">W<b>03</b></span>見守りネットワーク</a></li>
+  </ul>
+</section>
+
+<section class="sec" id="works">
+  <div class="sec-head"><h2>作品</h2><span>WORKS / 3 STOPS</span></div>
+  <div class="route">
+
+    <article class="work a" id="w01">
+      <div class="card">
+        <div class="body">
+          <div class="sign">
+            <span class="num a">W<b>01</b></span>
+            <h3>行ける駅を探す<small>train-map</small></h3>
+          </div>
+          <p class="lead">駅名と分数を入れると、その時間内に電車で行ける駅を地図に表示するWebアプリ。</p>
+          <ul class="points">
+            <li><strong>最短時間の探索を自作</strong> 優先度付きキュー（二分ヒープ）から書いたダイクストラ法で、首都圏1,708駅・1,975区間を探索</li>
+            <li><strong>オープンデータから所要時間を推定</strong> 国土数値情報を加工するスクリプトを用意し、駅間の距離から各駅停車相当の時間を計算。地下鉄と山手線は別の速度で見積もり</li>
+            <li><strong>乗り換えと直通運転</strong> 乗り換えは1回5分を加算、直通運転は乗り換えに数えない</li>
+            <li><strong>自動デプロイ</strong> GitHub Actionsで、プッシュするたびにGitHub Pagesへ公開</li>
+          </ul>
+          <ul class="tags"><li>TypeScript</li><li>Next.js</li><li>React</li><li>Leaflet</li><li>OpenStreetMap</li><li>Tailwind CSS</li><li>GitHub Actions</li></ul>
+          <div class="links">
+            <a class="go" href="https://yako123456.github.io/train-map/" target="_blank" rel="noopener">作品を開く →</a>
+            <a class="src" href="https://github.com/yako123456/train-map" target="_blank" rel="noopener">ソースコード</a>
+          </div>
+          <p class="note">対象は東京・神奈川・埼玉・千葉。所要時間は距離からの目安で、新幹線は含みません。</p>
+        </div>
+        <div class="fig" aria-hidden="true">
+          <svg viewBox="0 0 300 200" fill="none" stroke-linecap="round">
+            <circle cx="150" cy="100" r="78" stroke="var(--line-a)" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <path d="M10 100H290M150 12V188M40 30L260 170" stroke="var(--rule)" stroke-width="5"/>
+            <g fill="var(--line-a)"><circle cx="150" cy="100" r="9"/><circle cx="110" cy="100" r="6"/><circle cx="190" cy="100" r="6"/><circle cx="150" cy="60" r="6"/><circle cx="150" cy="140" r="6"/><circle cx="108" cy="73" r="6"/><circle cx="196" cy="129" r="6"/><circle cx="82" cy="100" r="6"/></g>
+            <g fill="var(--surface)" stroke="var(--ink-soft)" stroke-width="2"><circle cx="40" cy="100" r="5"/><circle cx="262" cy="100" r="5"/><circle cx="150" cy="18" r="5"/><circle cx="56" cy="40" r="5"/><circle cx="246" cy="161" r="5"/></g>
+            <text x="150" y="196" text-anchor="middle" fill="var(--ink-soft)" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">30分以内</text>
+          </svg>
+        </div>
+      </div>
+    </article>
+
+    <article class="work b" id="w02">
+      <div class="card">
+        <div class="body">
+          <div class="sign">
+            <span class="num b">W<b>02</b></span>
+            <h3>落ち物ゲー<small>otimono</small></h3>
+          </div>
+          <p class="lead">落ちてくるノーツをキーボードで叩く、練習向けのリズムゲーム。</p>
+          <ul class="points">
+            <li><strong>ライブラリなしでゲーム本体を実装</strong> Canvasへの描画、キー入力、判定までを約900行のJavaScriptで作成</li>
+            <li><strong>細かく設定できる</strong> 使うキー、落下速度、間隔（ms / BPMと音符の種類）、同時押しの確率、判定タイミングの調整</li>
+            <li><strong>音もコードで鳴らす</strong> 効果音と手拍子はWeb Audio APIで生成。音声ファイルは使っていません</li>
+            <li><strong>結果をグラフで確認</strong> クリア後に判定の内訳を表示。前回の設定はブラウザに保存</li>
+          </ul>
+          <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li><li>Web Audio API</li><li>Chart.js</li><li>GitHub Pages</li></ul>
+          <div class="links">
+            <a class="go" href="https://yako123456.github.io/otimono/" target="_blank" rel="noopener">遊んでみる →</a>
+            <a class="src" href="https://github.com/yako123456/otimono" target="_blank" rel="noopener">ソースコード</a>
+          </div>
+          <p class="note">キーボード操作のゲームです。PCでの閲覧をおすすめします。</p>
+        </div>
+        <div class="fig" aria-hidden="true">
+          <div class="game">
+            <div class="judge">PERFECT</div>
+            <div class="lanes"><i style="--t:18%"></i><i style="--t:62%"></i><i style="--t:40%"></i><i style="--t:84%"></i></div>
+            <div class="keys"><span>D</span><span>F</span><span>J</span><span>K</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="work c" id="w03">
+      <div class="card">
+        <div class="body">
+          <div class="sign">
+            <span class="num c">W<b>03</b></span>
+            <h3>見守りネットワーク<small>mimamori-demo</small></h3>
+          </div>
+          <p class="lead">玄関の見守りを中心に、服薬・体調・予定・日誌・緊急連絡をひとつにまとめた介護支援Webアプリ。就職作品として制作。</p>
+          <ul class="points">
+            <li><strong>静かでやさしい見守り</strong> 本人には音を鳴らさず、家族にだけDiscordで知らせる設計</li>
+            <li><strong>センサーからWebまで</strong> Raspberry Piの赤外線センサーとカメラで玄関付近の動きを検知し、写真つきで記録。通信が切れている間は保存して再送</li>
+            <li><strong>毎日の介護を記録</strong> 服薬の飲み忘れ通知、体温や血圧のグラフ、通院予定のお知らせ、家族で共有する日誌</li>
+            <li><strong>公開を前提にした作り</strong> 管理者と家族の権限分け、ログイン失敗の回数制限、自動テスト、誰でも試せるデモモード</li>
+          </ul>
+          <ul class="tags"><li>Node.js</li><li>Express</li><li>SQLite</li><li>JavaScript</li><li>Chart.js</li><li>Raspberry Pi</li><li>Python</li><li>Discord Webhook</li><li>Render</li></ul>
+          <div class="links">
+            <a class="go" href="https://mimamori-demo.onrender.com/" target="_blank" rel="noopener">デモを開く →</a>
+            <span class="note">デモ用ログイン <span class="login">taro / password</span></span>
+          </div>
+          <p class="note">デモは架空のサンプルデータで動いています。しばらくアクセスがないと停止するため、最初の表示に1分ほどかかる場合があります。</p>
+        </div>
+        <div class="fig" aria-hidden="true">
+          <div class="phone">
+            <div class="sos">緊急連絡</div>
+            <div class="row">玄関の見守り<span>検知 2件</span></div>
+            <div class="row">最新の体調<span>36.4℃</span></div>
+            <div class="row">今日のお薬<span>朝 済み</span></div>
+            <div class="row">これからの予定<span>通院</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="sec" id="skills">
+  <div class="sec-head"><h2>使った技術</h2><span>SKILLS</span></div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>技術</th><th>やったこと</th><th>使った作品</th></tr></thead>
+      <tbody>
+        <tr><td>HTML / CSS / JavaScript</td><td>フレームワークなしで、ゲームの描画・判定処理や、9画面ある介護アプリの画面を実装</td><td><div class="used"><span class="num sm b">W<b>02</b></span><span class="num sm c">W<b>03</b></span></div></td></tr>
+        <tr><td>TypeScript / Next.js / React</td><td>入力に応じて地図と結果一覧が変わる画面を構築</td><td><div class="used"><span class="num sm a">W<b>01</b></span></div></td></tr>
+        <tr><td>Node.js / Express / SQLite</td><td>ログイン、権限、記録のAPI、1分ごとの通知処理をサーバー側で実装</td><td><div class="used"><span class="num sm c">W<b>03</b></span></div></td></tr>
+        <tr><td>アルゴリズム</td><td>ダイクストラ法と二分ヒープを自分で書き、乗り換えと直通運転を考慮した探索を実装</td><td><div class="used"><span class="num sm a">W<b>01</b></span></div></td></tr>
+        <tr><td>データの加工</td><td>国土数値情報の鉄道データから、駅と路線のつながり・所要時間のデータを生成</td><td><div class="used"><span class="num sm a">W<b>01</b></span></div></td></tr>
+        <tr><td>ハードウェア連携</td><td>Raspberry Piのセンサーとカメラを Python で制御し、WebアプリのAPIへ送信</td><td><div class="used"><span class="num sm c">W<b>03</b></span></div></td></tr>
+        <tr><td>テスト</td><td>API・サービス・データベースの自動テストを用意</td><td><div class="used"><span class="num sm c">W<b>03</b></span></div></td></tr>
+        <tr><td>公開・デプロイ</td><td>GitHub Pages、GitHub Actions、Renderで、誰でも開ける状態にして公開</td><td><div class="used"><span class="num sm a">W<b>01</b></span><span class="num sm b">W<b>02</b></span><span class="num sm c">W<b>03</b></span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="sec-head"><h2>プロフィール</h2><span>ABOUT</span></div>
+  <div class="about">
+    <dl class="facts">
+      <div><dt>名前</dt><dd>yako</dd></div>
+      <div><dt>つくるもの</dt><dd>Webアプリ（画面、サーバー、センサー連携）</dd></div>
+      <div><dt>GitHub</dt><dd><a href="https://github.com/yako123456" target="_blank" rel="noopener">github.com/yako123456</a></dd></div>
+    </dl>
+    <div class="intro">
+      <p>身近な「あったら便利」を、実際に動く形にして公開しています。</p>
+      <p>3作品を通して、画面づくりだけでなく、データの加工、探索アルゴリズム、サーバーとデータベース、センサーとの連携、テスト、公開までを一通り経験しました。</p>
+      <p>つくって終わりにせず、URLを開けば誰でも触れる状態にすることを大切にしています。</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>© 2026 yako</span>
+  <span>鉄道データの出典：国土交通省 国土数値情報（鉄道データ）を加工して作成</span>
+</footer>
+
+</div>
+</body>
+</html>
